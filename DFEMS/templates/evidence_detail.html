@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    <h2>Evidence Details</h2>
+
+    <div class="card">
+
+        <p><strong>File Name:</strong> {{ evidence.file_name }}</p>
+
+        <p><strong>SHA256 Hash:</strong> {{ evidence.sha256_hash }}</p>
+
+        <p>
+            <strong>Integrity Status:</strong>
+            {% if evidence.integrity_status == "Valid" %}
+                <span class="status-open">Valid</span>
+            {% elif evidence.integrity_status == "Tampered" %}
+                <span class="status-closed">Tampered</span>
+            {% else %}
+                <span style="color:orange;">Unknown</span>
+            {% endif %}
+        </p>
+
+        <p><strong>Uploaded At:</strong> {{ evidence.uploaded_at }}</p>
+
+        <br>
+
+        <a href="/evidence/{{ evidence.id }}/verify">
+            <button>Verify Integrity</button>
+        </a>
+
+        <a href="/evidence/{{ evidence.id }}/download">
+            <button>Download Evidence</button>
+        </a>
+
+        {% if current_user.role == "Admin" %}
+    <a href="/evidence/{{ evidence.id }}/delete"
+       onclick="return confirm('Are you sure you want to permanently delete this evidence?');">
+        <button style="background-color:#ff4d4d;">
+            Delete Evidence
+        </button>
+    </a>
+{% endif %}
+
+
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>Preview</h3>
+
+        {% if evidence.file_name.lower().endswith(('.jpg', '.jpeg', '.png')) %}
+            <img src="/evidence_storage/{{ evidence.file_name }}" width="400">
+        {% else %}
+            <p>No preview available for this file type.</p>
+        {% endif %}
+    </div>
+
+    <br>
+
+    <div class="card">
+        <h3>Chain of Custody</h3>
+
+        {% if custody_logs %}
+            <table class="styled-table">
+                <tr>
+                    <th>Action</th>
+                    <th>User ID</th>
+                    <th>Timestamp</th>
+                </tr>
+
+                {% for log in custody_logs %}
+                <tr>
+                    <td>{{ log.action }}</td>
+                    <td>{{ log.performed_by }}</td>
+                    <td>{{ log.timestamp }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No custody records yet.</p>
+        {% endif %}
+    </div>
+
+    <br>
+
+    <a href="/case/{{ evidence.case_id }}">
+        <button>Back to Case</button>
+    </a>
+
+</div>
+
+{% endblock %}

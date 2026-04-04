@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if error %}
+    <p style="color:red;">{{ error }}</p>
+{% endif %}
+
+
+<div class="container">
+
+    <h2>Create New Case</h2>
+
+    <div class="card">
+        <form method="POST">
+
+            <label>Case Number</label>
+            <input type="text" name="case_number" required>
+
+            <label>Case Title</label>
+            <input type="text" name="title" required>
+
+            <label>Case Description</label>
+            <textarea name="description" rows="4" required></textarea>
+
+            <button type="submit">Create Case</button>
+
+        </form>
+    </div>
+
+    <br>
+
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+{% endblock %}

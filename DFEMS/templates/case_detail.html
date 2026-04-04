@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    <h2>Case Details</h2>
+
+    <div class="card">
+
+        {% if case.status != "Closed" %}
+
+            <a href="/case/{{ case.id }}/edit">
+                <button>Edit Case</button>
+            </a>
+
+            {% if current_user.role == "Admin" %}
+               <a href="/case/{{ case.id }}/delete"
+   onclick="return confirm('Are you sure you want to delete this case?');">
+    <button style="background-color:#ff4d4d;">Delete Case</button>
+</a>
+
+            {% endif %}
+
+        {% else %}
+            <p style="color:#ff4d4d; font-weight:bold;">
+                This case is CLOSED. No modifications allowed.
+            </p>
+        {% endif %}
+
+        <br><br>
+
+        <a href="/case/{{ case.id }}/download">
+            <button>Download Full Case</button>
+        </a>
+
+        <a href="/case/{{ case.id }}/report">
+            <button>Generate PDF Report</button>
+        </a>
+
+        <hr>
+
+        <p><strong>Case Number:</strong> {{ case.case_number }}</p>
+        <p><strong>Title:</strong> {{ case.title }}</p>
+        <p><strong>Description:</strong> {{ case.description }}</p>
+        <p>
+            <strong>Status:</strong>
+            {% if case.status == "Open" %}
+                <span class="status-open">Open</span>
+            {% else %}
+                <span class="status-closed">Closed</span>
+            {% endif %}
+        </p>
+
+    </div>
+
+    <br>
+
+    {% if case.status != "Closed" %}
+    <div class="card">
+        <h3>Upload Evidence</h3>
+
+        <form action="/case/{{ case.id }}/upload" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file" multiple required>
+            <button type="submit">Upload</button>
+        </form>
+    </div>
+    {% endif %}
+
+    <br>
+
+    <div class="card">
+        <h3>Uploaded Evidence</h3>
+
+        {% if evidence_list %}
+            <table class="styled-table">
+                <tr>
+                    <th>File Name</th>
+                    <th>SHA256 Hash</th>
+                </tr>
+
+                {% for evidence in evidence_list %}
+                <tr>
+                    <td>
+                        <a href="/evidence/{{ evidence.id }}">
+                            {{ evidence.file_name }}
+                        </a>
+                    </td>
+                    <td>{{ evidence.sha256_hash }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No evidence uploaded yet.</p>
+        {% endif %}
+    </div>
+
+    <br>
+
+    <a href="/cases">
+        <button>Back to Cases</button>
+    </a>
+
+</div>
+
+{% endblock %}

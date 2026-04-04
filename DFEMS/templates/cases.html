@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    <h2>All Cases</h2>
+
+    <table class="styled-table">
+        <tr>
+            <th>Case Number</th>
+            <th>Title</th>
+            <th>Status</th>
+        </tr>
+
+        {% for case in cases %}
+        <tr>
+            <td>
+                <a href="/case/{{ case.id }}">
+                    {{ case.case_number }}
+                </a>
+            </td>
+            <td>{{ case.title }}</td>
+            <td>
+                {% if case.status == "Open" %}
+                    <span class="status-open">Open</span>
+                {% else %}
+                    <span class="status-closed">Closed</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <br>
+
+    <a href="/dashboard">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+{% endblock %}

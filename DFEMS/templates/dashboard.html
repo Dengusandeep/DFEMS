@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    <h2>DFEMS Dashboard</h2>
+
+    <p>Welcome <strong>{{ current_user.name }}</strong> 
+    ({{ current_user.role }})</p>
+
+    <hr>
+
+    <h3>System Overview</h3>
+
+    <div class="card">
+        <p><strong>Total Cases:</strong> {{ total_cases }}</p>
+        <p><strong>Open Cases:</strong> {{ open_cases }}</p>
+        <p><strong>Closed Cases:</strong> {{ closed_cases }}</p>
+        <p><strong>Total Evidence Files:</strong> {{ total_evidence }}</p>
+        <p style="color:#ff4d4d;"><strong>Tampered Evidence:</strong> {{ tampered_evidence }}</p>
+    </div>
+
+    <br>
+
+    {% if current_user.role == "Admin" %}
+    <a href="/create_case"><button>Create New Case</button></a>
+{% endif %}
+
+<a href="/cases"><button>View All Cases</button></a>
+
+<a href="/logout"><button style="background-color:#ff4d4d;">Logout</button></a>
+
+</div>
+
+{% endblock %}

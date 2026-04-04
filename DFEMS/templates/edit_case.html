@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+    <h2>Edit Case</h2>
+
+    <div class="card">
+
+        <form method="POST">
+
+            <label>Case Title</label>
+            <input type="text" name="title" value="{{ case.title }}" required>
+
+            <label>Description</label>
+            <textarea name="description" required>{{ case.description }}</textarea>
+
+            <label>Status</label>
+            <select name="status">
+                <option value="Open" {% if case.status == "Open" %}selected{% endif %}>Open</option>
+                <option value="Under Investigation" {% if case.status == "Under Investigation" %}selected{% endif %}>Under Investigation</option>
+                <option value="Closed" {% if case.status == "Closed" %}selected{% endif %}>Closed</option>
+            </select>
+
+            <br><br>
+
+            <button type="submit">Update Case</button>
+
+        </form>
+
+    </div>
+
+    <br>
+
+    <a href="/case/{{ case.id }}">
+        <button>Back to Case</button>
+    </a>
+
+</div>
+
+{% endblock %}
